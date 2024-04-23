@@ -12,13 +12,13 @@ inertia_matrix = np.array([[0.0015, 0.0, 0.0],
                            [0.0, 0.0015, 0.0], 
                            [0.0, 0.0, 0.0015]])  # Replace with your inertia matrix
 # Replace with the external magnetic field components
-ex_b = np.array([0.7E-3, 0.7E-3, 0.7E-3]) #np.array([1E-3, 0, 0])
+ex_b = np.array([1E-3, 1E-3, 1E-3]) #np.array([1E-3, 0, 0])
 dt = 0.1  # Time step
 K = 100
-m = 0.2
+m = 0.02
 prev_mag = [0, 0, 0.0]
-omega = np.array([0.45784, 0.21877,0.1548456])  # Initial angular velocity
-MaxIter = 3000
+omega = np.array([0.095784, 0.071877,0.06548456])  # Initial angular velocity
+MaxIter = 8000
 progress = tqdm(total=MaxIter)
 bderivative = []
 torque = []
@@ -95,10 +95,10 @@ def reduce_spin_to_zero(inertia_matrix, dt):
         bdot = list((field[i]-prev_mag[i])/dt for i in range(3))
 
         # Bdot control
-        #magnetic_moment = K*np.cross(omega, rotated_magnetic_field)
+        magnetic_moment = K*np.cross(omega, rotated_magnetic_field)
 
         # bang bang only
-        magnetic_moment = np.array(list((-m if (math.copysign(1,bdot[i]) == 1) else m) for i in range(3)))
+        #magnetic_moment = np.array(list((-m if (math.copysign(1,bdot[i]) == 1) else m) for i in range(3)))
 
         bderivative.append(bdot[0])
 
